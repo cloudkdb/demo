@@ -1,0 +1,421 @@
+{
+    "type": "record",
+    "name": "Record",
+    "namespace": "com.alibaba.dts.formats.avro",
+    "fields": [
+        {
+            "name": "version",
+            "type": "int",
+            "doc": "version infomation"
+        },
+        {
+            "name": "id",
+            "type": "long",
+            "doc": "unique id of this record in the whole stream"
+        },
+        {
+            "name": "sourceTimestamp",
+            "type": "long",
+            "doc": "record log timestamp"
+        },
+        {
+            "name": "sourcePosition",
+            "type": "string",
+            "doc": "record source location information"
+        },
+        {
+            "name": "safeSourcePosition",
+            "type": "string",
+            "doc": "safe record source location information, use to recovery.",
+            "default": ""
+        },
+        {
+            "name": "sourceTxid",
+            "type": "string",
+            "doc": "record transation id",
+            "default": ""
+        },
+        {
+            "name": "source",
+            "type": {
+                "type": "record",
+                "name": "Source",
+                "fields": [
+                    {
+                        "name": "sourceType",
+                        "type": {
+                            "type": "enum",
+                            "name": "SourceType",
+                            "symbols": [
+                                "MySQL",
+                                "Oracle",
+                                "SQLServer",
+                                "PostgreSQL",
+                                "MongoDB",
+                                "Redis",
+                                "DB2",
+                                "PPAS",
+                                "DRDS",
+                                "HBASE",
+                                "HDFS",
+                                "FILE",
+                                "OTHER"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "version",
+                        "type": "string",
+                        "doc": "source datasource version information"
+                    }
+                ]
+            },
+            "doc": "source dataource"
+        },
+        {
+            "name": "operation",
+            "type": {
+                "type": "enum",
+                "name": "Operation",
+                "symbols": [
+                    "INSERT",
+                    "UPDATE",
+                    "DELETE",
+                    "DDL",
+                    "BEGIN",
+                    "COMMIT",
+                    "ROLLBACK",
+                    "ABORT",
+                    "HEARTBEAT",
+                    "CHECKPOINT",
+                    "COMMAND",
+                    "FILL",
+                    "FINISH",
+                    "CONTROL",
+                    "RDB",
+                    "NOOP",
+                    "INIT"
+                ]
+            },
+            "namespace": "com.alibaba.dts.formats.avro"
+        },
+        {
+            "name": "objectName",
+            "type": [
+                "null",
+                "string"
+            ],
+            "default": null
+        },
+        {
+            "name": "processTimestamps",
+            "type": [
+                "null",
+                {
+                    "type": "array",
+                    "items": "long"
+                }
+            ],
+            "doc": "time when this record is processed along the stream dataflow",
+            "default": null
+        },
+        {
+            "name": "tags",
+            "type": {
+                "type": "map",
+                "values": "string"
+            },
+            "doc": "tags to identify properties of this record",
+            "default": {}
+        },
+        {
+            "name": "fields",
+            "type": [
+                "null",
+                "string",
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "record",
+                        "name": "Field",
+                        "fields": [
+                            {
+                                "name": "name",
+                                "type": "string"
+                            },
+                            {
+                                "name": "dataTypeNumber",
+                                "type": "int"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "default": null
+        },
+        {
+            "name": "beforeImages",
+            "type": [
+                "null",
+                "string",
+                {
+                    "type": "array",
+                    "items": [
+                        "null",
+                        {
+                            "type": "record",
+                            "name": "Integer",
+                            "fields": [
+                                {
+                                    "name": "precision",
+                                    "type": "int"
+                                },
+                                {
+                                    "name": "value",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "record",
+                            "name": "Character",
+                            "fields": [
+                                {
+                                    "name": "charset",
+                                    "type": "string"
+                                },
+                                {
+                                    "name": "value",
+                                    "type": "bytes"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "record",
+                            "name": "Decimal",
+                            "fields": [
+                                {
+                                    "name": "value",
+                                    "type": "string"
+                                },
+                                {
+                                    "name": "precision",
+                                    "type": "int"
+                                },
+                                {
+                                    "name": "scale",
+                                    "type": "int"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "record",
+                            "name": "Float",
+                            "fields": [
+                                {
+                                    "name": "value",
+                                    "type": "double"
+                                },
+                                {
+                                    "name": "precision",
+                                    "type": "int"
+                                },
+                                {
+                                    "name": "scale",
+                                    "type": "int"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "record",
+                            "name": "Timestamp",
+                            "fields": [
+                                {
+                                    "name": "timestamp",
+                                    "type": "long"
+                                },
+                                {
+                                    "name": "millis",
+                                    "type": "int"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "record",
+                            "name": "DateTime",
+                            "fields": [
+                                {
+                                    "name": "year",
+                                    "type": [
+                                        "null",
+                                        "int"
+                                    ],
+                                    "default": null
+                                },
+                                {
+                                    "name": "month",
+                                    "type": [
+                                        "null",
+                                        "int"
+                                    ],
+                                    "default": null
+                                },
+                                {
+                                    "name": "day",
+                                    "type": [
+                                        "null",
+                                        "int"
+                                    ],
+                                    "default": null
+                                },
+                                {
+                                    "name": "hour",
+                                    "type": [
+                                        "null",
+                                        "int"
+                                    ],
+                                    "default": null
+                                },
+                                {
+                                    "name": "minute",
+                                    "type": [
+                                        "null",
+                                        "int"
+                                    ],
+                                    "default": null
+                                },
+                                {
+                                    "name": "second",
+                                    "type": [
+                                        "null",
+                                        "int"
+                                    ],
+                                    "default": null
+                                },
+                                {
+                                    "name": "millis",
+                                    "type": [
+                                        "null",
+                                        "int"
+                                    ],
+                                    "default": null
+                                }
+                            ]
+                        },
+                        {
+                            "type": "record",
+                            "name": "TimestampWithTimeZone",
+                            "fields": [
+                                {
+                                    "name": "value",
+                                    "type": "DateTime"
+                                },
+                                {
+                                    "name": "timezone",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "record",
+                            "name": "BinaryGeometry",
+                            "fields": [
+                                {
+                                    "name": "type",
+                                    "type": "string"
+                                },
+                                {
+                                    "name": "value",
+                                    "type": "bytes"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "record",
+                            "name": "TextGeometry",
+                            "fields": [
+                                {
+                                    "name": "type",
+                                    "type": "string"
+                                },
+                                {
+                                    "name": "value",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "record",
+                            "name": "BinaryObject",
+                            "fields": [
+                                {
+                                    "name": "type",
+                                    "type": "string"
+                                },
+                                {
+                                    "name": "value",
+                                    "type": "bytes"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "record",
+                            "name": "TextObject",
+                            "fields": [
+                                {
+                                    "name": "type",
+                                    "type": "string"
+                                },
+                                {
+                                    "name": "value",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "enum",
+                            "name": "EmptyObject",
+                            "symbols": [
+                                "NULL",
+                                "NONE"
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "default": null
+        },
+        {
+            "name": "afterImages",
+            "type": [
+                "null",
+                "string",
+                {
+                    "type": "array",
+                    "items": [
+                        "null",
+                        "Integer",
+                        "Character",
+                        "Decimal",
+                        "Float",
+                        "Timestamp",
+                        "DateTime",
+                        "TimestampWithTimeZone",
+                        "BinaryGeometry",
+                        "TextGeometry",
+                        "BinaryObject",
+                        "TextObject",
+                        "EmptyObject"
+                    ]
+                }
+            ],
+            "default": null
+        },
+        {
+            "name": "bornTimestamp",
+            "type": "long",
+            "doc": "the timestamp in unit of millisecond that record is born in source",
+            "default": 0
+        }
+    ]
+}
